@@ -1,0 +1,4 @@
+opencv-python # this one has to be installed via pip, the present "opencv" package from conda does not work with h264 videos
+pyzbar
+matplotlib
+numpy
