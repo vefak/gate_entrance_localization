@@ -13,10 +13,16 @@ def homogenous_to_img(p):
 
 if __name__ == '__main__':
     # Set up the camera parameters
-    K = np.load("./mtx.npy")
-    dist = np.load("./dist.npy")
+    K = np.load("./webcam_params/mtx.npy")
+    dist = np.load("./webcam_params/dist.npy")
     # Open an open cv camera capture
     capture = cv2.VideoCapture('outpy.m4v')
+
+
+    # Define the codec and create VideoWriter object
+    fourcc = cv2.VideoWriter_fourcc(*'XVID')
+    out = cv2.VideoWriter('SONUCLAR.avi',fourcc, 20.0, (640,480))
+
 
     # Check if camera opened successfully
     if not capture.isOpened():
@@ -89,6 +95,8 @@ if __name__ == '__main__':
 
             # Display the resulting frame
             cv2.imshow('Frame', frame)
+            # write the flipped frame
+            out.write(frame)
 
             # Render the frames every second
             cv2.waitKey(100)
@@ -99,7 +107,7 @@ if __name__ == '__main__':
 
     # When everything done, release the video capture object
     capture.release()
-
+    out.release()
     # Close all the open cv frames
     cv2.destroyAllWindows()
 

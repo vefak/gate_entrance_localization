@@ -8,7 +8,7 @@ def calibrate():
     # Prepare object target points (0, 0, 0), (1, 0, 0), (2, 0, 0), ..., (8, 5, 0) multiplied by the
     # checker dimension in meters
     objp = np.zeros((6 * 9, 3), np.float32)
-    objp[:, :2] = np.mgrid[0:6, 0:9].T.reshape(-1, 2) * 0.0295
+    objp[:, :2] = np.mgrid[0:6, 0:9].T.reshape(-1, 2) * 0.095
 
     # Create arrays to store object points and image points from all the images.
     objpoints = []  # 3d point in real world space
@@ -18,8 +18,9 @@ def calibrate():
     criteria = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER, 30, 0.001)
 
     # Detect corners in the input images
-    images = glob.glob('/home/vefak/Desktop/gate_entrance_localization/data_webcam/*.jpg')
+    images = glob.glob('/home/makman4/Desktop/gate_entrance_localization/data/*.pgm')
     detected = 0
+
     for fname in images:
         print('Processing frame:', fname)
 
@@ -27,7 +28,6 @@ def calibrate():
         img = cv2.resize(cv2.imread(fname), (1920, 1080), interpolation=cv2.INTER_CUBIC)
         gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
-        print(img.shape)
 
         # Find the chess board corners
         ret, corners = cv2.findChessboardCorners(gray, (6, 9), None)
@@ -64,6 +64,6 @@ if __name__ == '__main__':
     # Print out the obtained calibration parameters
     np.set_printoptions(suppress=True)
     print('K =', K)
-    np.save('mtx.npy', K)
+    np.save('stereo/mtx.npy', K)
     print('dist =', dist)
-    np.save('dist.npy', dist)
+    np.save('stereo/dist.npy', dist)
